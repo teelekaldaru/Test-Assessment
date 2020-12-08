@@ -1,0 +1,62 @@
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="d-flex flex-row justify-content-between">
+            <h3>
+                Shipment {{ shipment.shipmentNumber }}
+            </h3>
+            <div ngbDropdown class="d-inline-block">
+                <button
+                    [disabled]="shipment.isFinalized"
+                    class="btn btn-outline-primary"
+                    id="dropdownBasic1"
+                    ngbDropdownToggle>
+                </button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                    <button
+                        ngbDropdownItem
+                        (click)="finalize(shipment.id)">
+                        Finalize
+                    </button>
+                    <app-add-update-shipment
+                        *ngIf="shipment.id !== ''"
+                        [id]="shipment.id">
+                    </app-add-update-shipment>
+                    <button
+                        ngbDropdownItem
+                        (click)="delete(shipment.id)">
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+        <p class="text-muted">
+            Flight nr: {{ shipment.flightNumber }} <br/>
+            Departure: {{ shipment.flightDate }} <br/>
+            Airport: {{ shipment.airport }}
+        </p>
+        <p>
+            Status: {{ shipment.isFinalized === true ? 'Finalized' : 'Not finalized' }}
+        </p>
+        <hr />
+        <div class="d-flex flex-row justify-content-between">
+            <h5>
+                Shipment bags
+            </h5>
+            <app-add-update-bag
+                [shipmentId]="shipment.id"
+                [disabled]="shipment.isFinalized === true">
+            </app-add-update-bag>
+        </div>
+        <br/>
+        <div *ngIf="shipment.id !== ''">
+            <app-bags-with-parcels
+                [shipmentId]="shipment.id"
+                [disabled]="shipment.isFinalized === true">
+            </app-bags-with-parcels>
+            <app-bag-with-letters
+                [shipmentId]="shipment.id"
+                [disabled]="shipment.isFinalized === true">
+            </app-bag-with-letters>
+         </div>
+    </div>
+</div>

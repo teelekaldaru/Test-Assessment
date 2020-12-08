@@ -1,0 +1,166 @@
+<button
+    *ngIf="isAddMode"
+    class="btn btn-primary"
+    (click)="open(addBagModal)"
+    [disabled]="disabled">
+    Add bag
+</button>
+<button
+    *ngIf="!isAddMode"
+    class="btn btn-sm btn-light"
+    (click)="open(addBagModal)">
+    Edit
+</button>
+
+<ng-template #addBagModal let-modal>
+    <div class="modal-header">
+        <h4
+            class="modal-title"
+            id="modal-basic-title">
+            New bag
+        </h4>
+        <button
+            type="button"
+            class="close"
+            aria-label="Close"
+            (click)="onClose()">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <label>Contains</label>
+        <select
+            [(ngModel)]="containsParcels"
+            (change)="changeActiveForm()"
+            [disabled]="!isAddMode"
+            class="form-control">
+            <option [ngValue]="true">
+                Parcels
+            </option>
+            <option [ngValue]="false">
+                Letters
+            </option>
+        </select>
+        <br />
+        <form [formGroup]="bagForm" id="add-bag-form">
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Bag number</label>
+                    <input
+                        type="text"
+                        formControlName="bagNumber"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.bagNumber.errors }"
+                    />
+                    <div
+                        *ngIf="submitted && f.bagNumber.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="f.bagNumber.errors.required">
+                            Bag number is required
+                        </div>
+                        <div *ngIf="f.bagNumber.errors.maxlength">
+                            Bag number's length can be maximum 15 characters
+                        </div>
+                        <div *ngIf="f.bagNumber.errors.pattern">
+                            Bag number must contain only letters and numbers
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="!containsParcels">
+                <div class="form-row">
+                    <div class="form-group col-4">
+                        <label>Count of letters</label>
+                        <input
+                            type="text"
+                            formControlName="countOfLetters"
+                            class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && f.countOfLetters.errors }"
+                        />
+                        <div
+                            *ngIf="submitted && f.countOfLetters.errors"
+                            class="invalid-feedback">
+                            <div *ngIf="f.countOfLetters.errors.required">
+                                Count of letters must be specified
+                            </div>
+                            <div *ngIf="f.countOfLetters.errors.min">
+                                Bag must contain at least 1 letter
+                            </div>
+                            <div *ngIf="f.countOfLetters.errors.max">
+                                Bag cannot contain more than {{ intMaxValue }} letters
+                            </div>
+                            <div *ngIf="f.countOfLetters.errors.pattern">
+                                Count of letters must be a whole number
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-4">
+                        <label>Weight (kg)</label>
+                        <input
+                            type="text"
+                            formControlName="weight"
+                            class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && f.weight.errors }"
+                        />
+                        <div
+                            *ngIf="submitted && f.weight.errors"
+                            class="invalid-feedback">
+                            <div *ngIf="f.weight.errors.required">
+                                Bag weight must be specified
+                            </div>
+                            <div *ngIf="f.weight.errors.min">
+                                Bag weight bust be more than 0
+                            </div>
+                            <div *ngIf="f.weight.errors.max">
+                                Bag weight cannot be more than {{ intMaxValue }}
+                            </div>
+                            <div *ngIf="f.weight.errors.pattern">
+                                Bag weight must be a valid number and can have maximum 3 decimal places
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-4">
+                        <label>Price (€)</label>
+                        <input
+                            type="text"
+                            formControlName="price"
+                            class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && f.price.errors }"
+                        />
+                        <div
+                            *ngIf="submitted && f.price.errors"
+                            class="invalid-feedback">
+                            <div *ngIf="f.price.errors.required">
+                                Bag price must be specified
+                            </div>
+                            <div *ngIf="f.price.errors.min">
+                                Bag price bust be more than 0
+                            </div>
+                            <div *ngIf="f.price.errors.max">
+                                Bag price cannot be more than {{ intMaxValue }}
+                            </div>
+                            <div *ngIf="f.price.errors.pattern">
+                                Bag price must be a valid number and can have maximum 2 decimal places
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button
+            type="submit"
+            class="btn btn-success"
+            (click)="onSubmit()">
+            Save
+        </button>
+        <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="onClose()">
+            Cancel
+        </button>
+    </div>
+
+</ng-template>

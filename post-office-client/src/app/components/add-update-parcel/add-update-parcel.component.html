@@ -1,0 +1,174 @@
+<button
+    *ngIf="isAddMode"
+    class="btn btn-sm btn-light"
+    (click)="open(addParcelModal)">
+    Add parcel
+</button>
+
+<button
+    *ngIf="!isAddMode"
+    class="btn btn-sm btn-light"
+    (click)="open(addParcelModal)">
+    Edit
+</button>
+
+<ng-template #addParcelModal let-modal>
+    <div class="modal-header">
+        <h4
+            *ngIf="isAddMode"
+            class="modal-title"
+            id="modal-basic-title">
+            Add parcel
+        </h4>
+        <h4
+            *ngIf="!isAddMode"
+            class="modal-title"
+            id="modal-basic-title">
+            Edit parcel
+        </h4>
+        <button
+            type="button"
+            class="close"
+            aria-label="Close"
+            (click)="onClose()">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <form
+            [formGroup]="parcelForm"
+            (ngSubmit)="onSubmit()"
+            id="add-parcel-form">
+            <div class="form-row">
+                <div class="form-group col-6">
+                    <label>Parcel number</label>
+                    <input
+                        type="text"
+                        formControlName="parcelNumber"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.parcelNumber.errors }"
+                        placeholder="LLNNNNNNLL"
+                    />
+                    <div
+                        *ngIf="submitted && f.parcelNumber.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="f.parcelNumber.errors.required">
+                            Parcel number is required
+                        </div>
+                        <div *ngIf="f.parcelNumber.errors.pattern">
+                            Parcel number must be in the format LLNNNNNNLL
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-6">
+                    <label>Recipient name</label>
+                    <input
+                        type="text"
+                        formControlName="recipientName"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.recipientName.errors }"
+                    />
+                    <div
+                        *ngIf="submitted && f.recipientName.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="f.recipientName.errors.required">
+                            Recipient name is required
+                        </div>
+                        <div *ngIf="f.recipientName.errors.maxlength">
+                            Recipient name's length can be maximum 100 characters
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-4">
+                    <label>Destination country</label>
+                    <input
+                        type="text"
+                        formControlName="destinationCountry"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.destinationCountry.errors }"
+                    />
+                    <div
+                        *ngIf="submitted && f.destinationCountry.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="f.destinationCountry.errors.required">
+                            Destination country must be specified
+                        </div>
+                        <div *ngIf="f.destinationCountry.errors.minlength">
+                            Destination country's length must be at least 2 characters
+                        </div>
+                        <div *ngIf="f.destinationCountry.errors.maxlength">
+                            Destination country's length can be maximum 2 characters
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-4">
+                    <label>Weight (kg)</label>
+                    <input
+                        type="text"
+                        formControlName="weight"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.weight.errors }"
+                    />
+                    <div
+                        *ngIf="submitted && f.weight.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="f.weight.errors.required">
+                            Bag weight must be specified
+                        </div>
+                        <div *ngIf="f.weight.errors.min">
+                            Bag weight bust be more than 0
+                        </div>
+                        <div *ngIf="f.weight.errors.max">
+                            Bag weight cannot be more than {{ intMaxValue }}
+                        </div>
+                        <div *ngIf="f.weight.errors.pattern">
+                            Bag weight must be a valid number and can have maximum 3 decimal places
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-4">
+                    <label>Price (€)</label>
+                    <input
+                        type="text"
+                        formControlName="price"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.price.errors }"
+                    />
+                    <div
+                        *ngIf="submitted && f.price.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="f.price.errors.required">
+                            Bag price must be specified
+                        </div>
+                        <div *ngIf="f.price.errors.min">
+                            Bag price bust be more than 0
+                        </div>
+                        <div *ngIf="f.price.errors.max">
+                            Bag price cannot be more than {{ intMaxValue }}
+                        </div>
+                        <div *ngIf="f.price.errors.pattern">
+                            Bag price must be a valid number and can have maximum 2 decimal places
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button
+            type="submit"
+            class="btn btn-success"
+            form="add-parcel-form">
+            Save
+        </button>
+        <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="onClose()">
+            Cancel
+        </button>
+    </div>
+</ng-template>

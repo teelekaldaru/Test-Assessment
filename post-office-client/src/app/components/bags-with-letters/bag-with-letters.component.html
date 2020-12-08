@@ -1,0 +1,55 @@
+<ngb-accordion>
+    <ngb-panel *ngFor="let bag of bags">
+        <ng-template ngbPanelTitle>
+            <div class="d-flex flex-row justify-content-between">
+                <div>
+                    <span class="text-dark">
+                        <b>{{ bag.bagNumber }}</b>
+                    </span>
+                    <p class="text-muted text-small">
+                        Bag with letters
+                    </p>
+                </div>
+                <div class="text-right">
+                    <p class="text-muted text-small">
+                        Letters: {{ bag.countOfLetters }}
+                    </p>
+                    <p class="text-muted text-small">
+                        Total price: {{ bag.price }} €
+                    </p>
+                    <p class="text-muted text-small">
+                        Total weight: {{ bag.weight }} kg
+                    </p>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template ngbPanelContent>
+            <div class="d-flex flex-rox justify-content-between">
+                <div>
+                    <p class="m-0">
+                        Letters: {{ bag.countOfLetters }}
+                    </p>
+                    <p class="m-0">
+                        Weight: {{ bag.weight }}
+                    </p>
+                    <p class="m-0">
+                        Price: {{ bag.price }}
+                    </p>
+                </div>
+                <div *ngIf="!disabled">
+                    <app-add-update-bag
+                        [shipmentId]="shipmentId"
+                        [disabled]="disabled"
+                        [id]="bag.id"
+                        [containsParcels]="false">
+                    </app-add-update-bag>
+                    <button
+                        class="btn btn-sm btn-light"
+                        (click)="delete(bag.id)">
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </ng-template>
+    </ngb-panel>
+</ngb-accordion>

@@ -1,0 +1,52 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Parcel number
+            </th>
+            <th>
+                Recipient
+            </th>
+            <th>
+                Destination
+            </th>
+            <th>
+                Weight (kg)
+            </th>
+            <th>
+                Price (€)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let parcel of parcels">
+            <td>
+                {{ parcel.parcelNumber }}
+            </td>
+            <td>
+                {{ parcel.recipientName }}
+            </td>
+            <td>
+                {{ parcel.destinationCountry }}
+            </td>
+            <td>
+                {{ parcel.weight }}
+            </td>
+            <td>
+                {{ parcel.price }}
+            </td>
+            <td *ngIf="!disabled">
+                <app-add-update-parcel
+                    [bagWithParcelsId]="parcel.bagWithParcelsId"
+                    [id]="parcel.id">
+                </app-add-update-parcel>
+                <button
+                    class="btn btn-sm btn-light"
+                    (click)="delete(parcel.id)">
+                    Delete
+                </button>
+            </td>
+        </tr>
+    </tbody>
+  </table>

@@ -1,0 +1,81 @@
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="d-flex flex-row justify-content-between">
+            <h3>
+                Shipments
+            </h3>
+            <app-add-update-shipment></app-add-update-shipment>
+        </div>
+        <ul
+            ngbNav
+            #nav="ngbNav"
+            class="nav-tabs">
+            <li ngbNavItem>
+                <a ngbNavLink>Unfinalized</a>
+                <ng-template ngbNavContent *ngIf="!unfinalizedShipments">
+                    <div class="text-center">
+                        <br />
+                        <span class="spinner-border spinner-border-lg align-center"></span>
+                    </div>
+                </ng-template>
+                <ng-template ngbNavContent>
+                    <div
+                        class="card"
+                        *ngFor="let unfinalizedShipment of unfinalizedShipments">
+                        <h5 class="card-header">
+                            {{ unfinalizedShipment.shipmentNumber }}
+                        </h5>
+                        <div class="card-body d-flex flex-row justify-content-between">
+                            <p class="card-text text-muted">
+                                Flight nr: {{ unfinalizedShipment.flightNumber }} <br/>
+                                Departure: {{ unfinalizedShipment.flightDate }} <br/>
+                                Airport: {{ unfinalizedShipment.airport }}
+                            </p>
+                            <div>
+                                <a
+                                    routerLink="/shipments/{{ unfinalizedShipment.id }}"
+                                    class="btn btn-primary">
+                                    Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </li>
+            <li ngbNavItem>
+                <a ngbNavLink>Finalized</a>
+                <ng-template ngbNavContent *ngIf="!finalizedShipments">
+                    <div class="text-center">
+                        <br />
+                        <span class="spinner-border spinner-border-lg align-center"></span>
+                    </div>
+                </ng-template>
+                <ng-template ngbNavContent>
+                    <div
+                        class="card"
+                        *ngFor="let finalizedShipment of finalizedShipments">
+                        <h5 class="card-header">
+                            {{ finalizedShipment.shipmentNumber }}
+                        </h5>
+                        <div class="card-body d-flex flex-row justify-content-between">
+                            <p class="card-text text-muted">
+                                Flight nr: {{ finalizedShipment.flightNumber }} <br/>
+                                Departure: {{ finalizedShipment.flightDate }} <br/>
+                                Airport: {{ finalizedShipment.airport }}
+                            </p>
+                            <div>
+                                <a
+                                    routerLink="/shipments/{{ finalizedShipment.id }}"
+                                    class="btn btn-primary">
+                                    Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </li>
+        </ul>
+        <div [ngbNavOutlet]="nav"></div>
+    </div>
+</div>
+

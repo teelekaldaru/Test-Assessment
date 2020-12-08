@@ -1,0 +1,238 @@
+USE [master]
+GO
+
+/****** Object:  Database [tekald-assessment]    Script Date: 02.12.2020 14:51:20 ******/
+CREATE DATABASE [tekald-assessment]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'tekald-assessment', FILENAME = N'/var/opt/mssql/data/tekald-assessment.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'tekald-assessment_log', FILENAME = N'/var/opt/mssql/data/tekald-assessment_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT
+GO
+
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [tekald-assessment].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+
+ALTER DATABASE [tekald-assessment] SET ANSI_NULL_DEFAULT OFF 
+GO
+
+ALTER DATABASE [tekald-assessment] SET ANSI_NULLS OFF 
+GO
+
+ALTER DATABASE [tekald-assessment] SET ANSI_PADDING OFF 
+GO
+
+ALTER DATABASE [tekald-assessment] SET ANSI_WARNINGS OFF 
+GO
+
+ALTER DATABASE [tekald-assessment] SET ARITHABORT OFF 
+GO
+
+ALTER DATABASE [tekald-assessment] SET AUTO_CLOSE OFF 
+GO
+
+ALTER DATABASE [tekald-assessment] SET AUTO_SHRINK OFF 
+GO
+
+ALTER DATABASE [tekald-assessment] SET AUTO_UPDATE_STATISTICS ON 
+GO
+
+ALTER DATABASE [tekald-assessment] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+
+ALTER DATABASE [tekald-assessment] SET CURSOR_DEFAULT  GLOBAL 
+GO
+
+ALTER DATABASE [tekald-assessment] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+
+ALTER DATABASE [tekald-assessment] SET NUMERIC_ROUNDABORT OFF 
+GO
+
+ALTER DATABASE [tekald-assessment] SET QUOTED_IDENTIFIER OFF 
+GO
+
+ALTER DATABASE [tekald-assessment] SET RECURSIVE_TRIGGERS OFF 
+GO
+
+ALTER DATABASE [tekald-assessment] SET  ENABLE_BROKER 
+GO
+
+ALTER DATABASE [tekald-assessment] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+
+ALTER DATABASE [tekald-assessment] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+
+ALTER DATABASE [tekald-assessment] SET TRUSTWORTHY OFF 
+GO
+
+ALTER DATABASE [tekald-assessment] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+
+ALTER DATABASE [tekald-assessment] SET PARAMETERIZATION SIMPLE 
+GO
+
+ALTER DATABASE [tekald-assessment] SET READ_COMMITTED_SNAPSHOT ON 
+GO
+
+ALTER DATABASE [tekald-assessment] SET HONOR_BROKER_PRIORITY OFF 
+GO
+
+ALTER DATABASE [tekald-assessment] SET RECOVERY FULL 
+GO
+
+ALTER DATABASE [tekald-assessment] SET  MULTI_USER 
+GO
+
+ALTER DATABASE [tekald-assessment] SET PAGE_VERIFY CHECKSUM  
+GO
+
+ALTER DATABASE [tekald-assessment] SET DB_CHAINING OFF 
+GO
+
+ALTER DATABASE [tekald-assessment] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+
+ALTER DATABASE [tekald-assessment] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+
+ALTER DATABASE [tekald-assessment] SET DELAYED_DURABILITY = DISABLED 
+GO
+
+ALTER DATABASE [tekald-assessment] SET QUERY_STORE = OFF
+GO
+
+ALTER DATABASE [tekald-assessment] SET  READ_WRITE 
+GO
+
+
+USE [tekald-assessment]
+GO
+
+/****** Object:  Table [dbo].[BagWithLetterses]    Script Date: 02.12.2020 14:52:47 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[BagWithLetterses](
+	[Id] [uniqueidentifier] NOT NULL,
+	[BagNumber] [nvarchar](15) NOT NULL,
+	[CountOfLetters] [int] NOT NULL,
+	[Weight] [float] NOT NULL,
+	[Price] [float] NOT NULL,
+	[ShipmentId] [uniqueidentifier] NOT NULL,
+ CONSTRAINT [PK_BagWithLetterses] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[BagWithLetterses]  WITH CHECK ADD  CONSTRAINT [FK_BagWithLetterses_Shipments_ShipmentId] FOREIGN KEY([ShipmentId])
+REFERENCES [dbo].[Shipments] ([Id])
+ON DELETE CASCADE
+GO
+
+ALTER TABLE [dbo].[BagWithLetterses] CHECK CONSTRAINT [FK_BagWithLetterses_Shipments_ShipmentId]
+GO
+
+
+
+USE [tekald-assessment]
+GO
+
+/****** Object:  Table [dbo].[BagWithParcelses]    Script Date: 02.12.2020 14:53:44 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[BagWithParcelses](
+	[Id] [uniqueidentifier] NOT NULL,
+	[BagNumber] [nvarchar](15) NOT NULL,
+	[ShipmentId] [uniqueidentifier] NOT NULL,
+ CONSTRAINT [PK_BagWithParcelses] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[BagWithParcelses]  WITH CHECK ADD  CONSTRAINT [FK_BagWithParcelses_Shipments_ShipmentId] FOREIGN KEY([ShipmentId])
+REFERENCES [dbo].[Shipments] ([Id])
+ON DELETE CASCADE
+GO
+
+ALTER TABLE [dbo].[BagWithParcelses] CHECK CONSTRAINT [FK_BagWithParcelses_Shipments_ShipmentId]
+GO
+
+
+USE [tekald-assessment]
+GO
+
+/****** Object:  Table [dbo].[Parcels]    Script Date: 02.12.2020 14:54:05 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Parcels](
+	[Id] [uniqueidentifier] NOT NULL,
+	[ParcelNumber] [nvarchar](450) NOT NULL,
+	[RecipientName] [nvarchar](100) NOT NULL,
+	[DestinationCountry] [nvarchar](2) NOT NULL,
+	[Weight] [float] NOT NULL,
+	[Price] [float] NOT NULL,
+	[BagWithParcelsId] [uniqueidentifier] NOT NULL,
+ CONSTRAINT [PK_Parcels] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Parcels]  WITH CHECK ADD  CONSTRAINT [FK_Parcels_BagWithParcelses_BagWithParcelsId] FOREIGN KEY([BagWithParcelsId])
+REFERENCES [dbo].[BagWithParcelses] ([Id])
+ON DELETE CASCADE
+GO
+
+ALTER TABLE [dbo].[Parcels] CHECK CONSTRAINT [FK_Parcels_BagWithParcelses_BagWithParcelsId]
+GO
+
+
+USE [tekald-assessment]
+GO
+
+/****** Object:  Table [dbo].[Shipments]    Script Date: 02.12.2020 14:54:20 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Shipments](
+	[Id] [uniqueidentifier] NOT NULL,
+	[ShipmentNumber] [nvarchar](450) NOT NULL,
+	[Airport] [int] NOT NULL,
+	[FlightNumber] [nvarchar](max) NOT NULL,
+	[FlightDate] [datetime2](7) NOT NULL,
+	[IsFinalized] [bit] NOT NULL,
+ CONSTRAINT [PK_Shipments] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+
+
+

@@ -1,0 +1,61 @@
+<ngb-accordion>
+    <ngb-panel *ngFor="let bag of bags">
+        <ng-template ngbPanelTitle>
+            <div class="d-flex flex-row justify-content-between">
+                <div>
+                    <span class="text-dark">
+                        <b>{{ bag.bagNumber }}</b>
+                    </span>
+                    <p class="text-muted text-small">
+                        Bag with parcels
+                    </p>
+                </div>
+                <div class="text-right">
+                    <p class="text-muted text-small">
+                        Parcels: {{ bag.parcelsCount }}
+                    </p>
+                    <p class="text-muted text-small">
+                        Total price: {{ bag.totalPrice }} €
+                    </p>
+                    <p class="text-muted text-small">
+                        Total weight: {{ bag.totalWeight }} kg
+                    </p>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template ngbPanelContent>
+            <div
+                class="d-flex flex-row justify-content-between">
+                <p
+                    *ngIf="bag.parcelsCount === 0; else elseBlock"
+                    class="text-muted">
+                    This bag does not contain any parcels yet.
+                </p>
+                <ng-template #elseBlock>
+                    <h6>Parcels</h6>
+                </ng-template>
+                <div *ngIf="!disabled">
+                    <app-add-update-parcel [bagWithParcelsId]="bag.id"></app-add-update-parcel>
+                    <app-add-update-bag
+                        [shipmentId]="shipmentId"
+                        [disabled]="disabled"
+                        [id]="bag.id"
+                        [containsParcels]="true">
+                    </app-add-update-bag>
+                    <button
+                        class="btn btn-sm btn-light"
+                        (click)="delete(bag.id)">
+                        Delete
+                    </button>
+                </div>
+            </div>
+            <div *ngIf="bag.parcelsCount > 0">
+                <br />
+                <app-parcels-table
+                    [parcels]="bag.parcels"
+                    [disabled]="disabled">
+                </app-parcels-table>
+            </div>
+        </ng-template>
+    </ngb-panel>
+</ngb-accordion>

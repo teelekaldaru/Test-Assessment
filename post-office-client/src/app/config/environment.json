@@ -1,0 +1,4 @@
+{
+    "backendUrl" : "https://localhost:5001/api/v1/",
+    "swaggerUrl" : "https://localhost:5001/swagger/index.html"
+  }

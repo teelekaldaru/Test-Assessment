@@ -1,0 +1,160 @@
+<button
+    *ngIf="isAddMode"
+    class="btn btn-primary"
+    (click)="open(mymodal)">
+    Add shipment
+</button>
+
+<button
+    *ngIf="!isAddMode"
+    (click)="open(mymodal)"
+    ngbDropdownItem>
+    Edit
+</button>
+
+<ng-template #mymodal let-modal>
+    <div class="modal-header">
+        <h4
+            *ngIf="isAddMode"
+            class="modal-title"
+            id="modal-basic-title">
+            Add shipment
+        </h4>
+        <h4
+            *ngIf="!isAddMode"
+            class="modal-title"
+            id="modal-basic-title">
+            Edit shipment
+        </h4>
+        <button
+            type="button"
+            class="close"
+            aria-label="Close"
+            (click)="onClose()">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <form
+            [formGroup]="shipmentForm"
+            (ngSubmit)="onSubmit()"
+            id="add-shipment-form">
+            <div class="form-row">
+                <div class="form-group col-6">
+                    <label>Shipment number</label>
+                    <input
+                        type="text"
+                        formControlName="shipmentNumber"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.shipmentNumber.errors }"
+                        placeholder="XXX-XXXXXX"
+                    />
+                    <div
+                        *ngIf="submitted && f.shipmentNumber.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="f.shipmentNumber.errors.required">
+                            Shipment number is required
+                        </div>
+                        <div *ngIf="f.shipmentNumber.errors.pattern">
+                            Shipment number must be in the format XXX-XXXXXX
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-6">
+                    <label>Airport</label>
+                    <select
+                        formControlName="airport"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.airport.errors }">
+                        <option value="TLL">
+                            TLL
+                        </option>
+                        <option value="RIX">
+                            RIX
+                        </option>
+                        <option value="HEL">
+                            HEL
+                        </option>
+                    </select>
+                    <div
+                        *ngIf="submitted && f.airport.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="f.airport.errors.required">
+                            Airport is required
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Flight number</label>
+                    <input
+                        type="text"
+                        formControlName="flightNumber"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.flightNumber.errors }"
+                        placeholder="LLNNNN"
+                    />
+                    <div
+                        *ngIf="submitted && f.flightNumber.errors"
+                        class="invalid-feedback">
+                        <div *ngIf="f.flightNumber.errors.required">
+                            Flight number is required
+                        </div>
+                        <div *ngIf="f.flightNumber.errors.pattern">
+                            Flight number must be in the format LLNNNN, where L - letter and N - number
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-6">
+                    <label>Flight date</label>
+                    <div class="input-group">
+                        <input
+                            class="form-control"
+                            type="text"
+                            ngbDatepicker
+                            [minDate]="minDate"
+                            (click)="datePicker.toggle()"
+                            #datePicker="ngbDatepicker"
+                            formControlName="flightDate"
+                            placeholder="yyyy-mm-dd"
+                            [ngClass]="{ 'is-invalid': submitted && f.flightDate.errors }"
+                        />
+                        <div class="input-group-append">
+                            <button
+                                class="btn btn-outline-secondary"
+                                (click)="datePicker.toggle()"
+                                type="button">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-6">
+                    <label>Flight time</label>
+                    <ngb-timepicker
+                        formControlName="flightTime"
+                        [ngClass]="{ 'is-invalid': submitted && f.flightTime.errors }">
+                    </ngb-timepicker>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button
+            type="submit"
+            class="btn btn-success"
+            form="add-shipment-form">
+            Save
+        </button>
+        <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="onClose()">
+            Cancel
+        </button>
+    </div>
+</ng-template>
